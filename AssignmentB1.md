@@ -5,6 +5,8 @@ Rishika
 
 # Assignment B-1: Making a Function
 
+## Setup
+
 ``` r
 #loading packages 
 library(dplyr)
@@ -140,7 +142,7 @@ test_that("Test groupby_summarise function", {
 })
 ```
 
-    ## Test passed 😸
+    ## Test passed 🎊
 
 ``` r
 mean_bodymass <- as_tibble(penguins %>%
@@ -152,7 +154,7 @@ expect_equal(groupby_summarise(penguins, species, body_mass_g, na.rm = TRUE), me
 })
 ```
 
-    ## Test passed 🥳
+    ## Test passed 😸
 
 ``` r
 #Expect output to be a tibble 
@@ -163,4 +165,4 @@ test_that("Test groupby_summarise function",{
 })
 ```
 
-    ## Test passed 🌈
+    ## Test passed 🥳
