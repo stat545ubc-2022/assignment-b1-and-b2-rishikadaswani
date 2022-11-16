@@ -1,0 +1,90 @@
+---
+title: "RishikaDaswani_AssignmentB1"
+author: "Rishika"
+date: "2022-10-31"
+output: github_document
+---
+
+
+# Assignment B-1: Making a Function #
+
+
+## Setup ## 
+```{r}
+#loading packages 
+library(dplyr)
+library(testthat)
+library(tidyverse)
+library(palmerpenguins)
+library(datateachr)
+library(gapminder)
+library(tibble)
+```
+
+
+## Exercise 1 & 2: Make a Function & Document your Function ## 
+```{r}
+#' Title Bundling group_by() and summarise() workflow 
+#' @description This function finds the mean values for the grouped by variable. 
+#' @param dataset - The dataset you are working with 
+#' @param groupby_variable - Input the name of the column you wish to group your data by. 
+#' @param summarise_variable - Input the name of the column you want the data from 
+#'
+#' @return A tibble of Mean values of summarise_variable presented in the manner you grouped your data by
+#' @export 
+#' 
+#' @examples 
+#' groupby_summarise(penguins, species, body_mass_g) - this will give you the mean body mass in grams for each of the penguin species 
+
+
+group.mean <- function(dataset, groupby_variable, summarise_variable, na.rm) {
+  dataset %>% group_by({{groupby_variable}}) %>% summarise(mean_val = mean({{summarise_variable}}, na.rm = TRUE))
+}
+```
+
+## Exercise 3: Include Examples ## 
+```{r}
+#Example 1 - Finding mean body mads (g) for each of the species in the penguins dataset 
+group.mean(penguins, species, body_mass_g)
+```
+```{r}
+#Example 2 - Finding mean diameter for each tree genus in the Vancouver trees dataset 
+group.mean(vancouver_trees, genus_name, diameter)
+```
+```{r}
+#Example 3 - Finding the mean life expectancy for each country in the gapminder dataset 
+group.mean(gapminder, country, lifeExp)
+```
+
+## Exercise 4 - Test the Function ## 
+```{r}
+#Expecting error when variable name chosen is not in dataset
+test_that("Test group.mean function", {
+  expect_error(group.mean(penguins, 
+                                 fake_x,
+                                 fake_y))
+})
+```
+
+```{r}
+mean_bodymass <- as_tibble(penguins %>%
+  group_by(species) %>%
+  summarise(mean_val = mean(body_mass_g, na.rm = TRUE)))
+
+test_that("Testing basic functionality", {
+expect_equal(group.mean(penguins, species, body_mass_g, na.rm = TRUE), mean_bodymass)
+})
+```
+
+```{r}
+#Expect output to be a tibble 
+test_that("Test group.mean function",{
+  expect_true(is_tibble(group.mean(penguins, 
+                                      species,
+                                      body_mass_g)))
+})
+```
+
+
+
+
